@@ -230,42 +230,54 @@ this.x=0;
 this.y=0;
 this.width= 1100
 this.height=700;
+this.music1 = new Audio();
+this.music1.src = "img/music.mp3";
+this.music = new Audio();
+this.music.src = "img/silbato.mp3";
 this.img = new Image();
 this.img.src = "img/soccer.jpg";
 ctx.drawImage(this.img,this.x,this.y,this.width,this.height);
 
-this.drawScore= function(){
-  this.score = "score";
-  ctx.font = "50px Avenir";
-          ctx.fillStyle = "white";
-          ctx.fillText(this.score,this.width/2, this.y+50);
-}
 
 }
+
+
+function drawScore(){ 
+    ctx.font = '24px Arial';
+    ctx.fillStyle = "white";
+    ctx.fillText("Real Madrid: " + scorePc +"  -  " + "Barcelona: " + scorePlayer,350, 80);
+  }
+
+
 
 //Validacion
 function checkGoalsPc(){
 if(ball.isTouchingGoal(porteriaPc)){
-  ball.draw();
+  ball.x=400;
+  scorePc++
+  console.log(scorePc)
   ctx.font = "80px courier";
   ctx.strokeStyle="white";
   ctx.lineWidth = 8;
   ctx.strokeText("G00OOOAAALL" , 180,230);
+  board.music.play();
   stop();
 
 }
 }
 function checkGoalsPlayer(){
   if(ball.isTouchingGoal(porteriaPlayer)){
-  ball.draw();
+  ball.x=400;
+  scorePlayer++;
+  console.log(scorePlayer)
   ctx.font = "80px courier";
   ctx.strokeStyle="white";
   ctx.lineWidth = 8;
-  ctx.strokeText("G00OOOAAALL" , 180,230); stop();
+  ctx.strokeText("G00OOOAAALL" , 180,230);
+  board.music.play();
   stop();
-
  }
-  }
+}
 
 
 
@@ -276,11 +288,14 @@ function startGame(){
   players = []
   generatePlayers();
   generatePcs()
+  drawScore()
+  board.music1.play();
+
 } 
 
 function stop(){
   clearInterval(intervalo);
-  intervalo = 0;
+  interval = 0;
 }       
 
 function update(){	
@@ -294,6 +309,7 @@ function update(){
   checkGoalsPc(porteriaPc)
   checkGoalsPlayer(porteriaPlayer)
   PorteriaPc();
+  drawScore();
 
 players.forEach(function(user){
   if(ball.isTouching(user))
