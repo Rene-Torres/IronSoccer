@@ -3,9 +3,68 @@ var ctx = canvas.getContext('2d');
 
 //ctx.fillRect(0,0,200,200)
 
-//declaraciones
+intro();
+function intro(){
+  ctx.beginPath();
+  ctx.font = "80px Impact";
+  ctx.fillStyle="white";
+  textAlign = "center";
+  ctx.fillText("Press Enter to Play" , 100,160); 
+  ctx.closePath();
+  ctx.beginPath();
+  ctx.font = "40px Impact";
+  textAlign = "center";
 
+  ctx.fillText("Player one" , 180,300); 
+  ctx.fillText("W = Up",180,350);
+  ctx.fillText("S  = Down",180,400)
+  
+
+  ctx.fillText("Player two" , 480,300); 
+  ctx.fillText("Up arrow = Up" ,480,350); 
+  ctx.fillText("Down arrow = Down",480,400)
+
+  ctx.closePath();
+}
+
+
+var gameLimit = 2;
+var start = true;
+
+
+function valida(){
+  if(scorePc == gameLimit || scorePlayer == gameLimit){
+    gameOver();
+  }}
+
+
+function gameOver(){
+  ctx.beginPath();
+  ctx.font = "80px Arial";
+  ctx.strokeStyle="black";
+  ctx.lineWidth = 8;
+  ctx.strokeText("Game Over!" , 295,180); 
+  if(scorePc==gameLimit){
+    ctx.font = "50px Arial";
+    ctx.strokeStyle="black";
+    ctx.lineWidth = 5;
+    ctx.strokeText("Winner Player one!" , 315,330);
+    ctx.strokeText("Press Enter to Play Again!" , 260,380);
+
+    }
+    else if(
+    scorePlayer==gameLimit){
+      ctx.font = "50px Arial";
+      ctx.strokeStyle="black";
+      ctx.lineWidth = 5;
+      ctx.strokeText("Winner Player two!" , 315,330); 
+      ctx.strokeText("Press Enter to Play Again!" , 260
+      ,380);
  
+      }  
+      stop();
+    }
+
 function PorteriaPlayer(){
   this.x=160;
   this.y=265;
@@ -13,8 +72,8 @@ function PorteriaPlayer(){
   this.height=100;
   this.onload=function(){
   this.draw()}.bind(this)
-  this.draw =function(){}
-    ctx.fillRect(this.x,this.y,10,100);}
+  this.draw =function(){
+    ctx.fillRect(this.x,this.y,10,100);}}
 
 
     function PorteriaPc(){
@@ -24,14 +83,11 @@ function PorteriaPlayer(){
       this.height=100;
       this.onload=function(){
       this.draw()}.bind(this)
-      this.draw =function(){}
+      this.draw =function(){
       ctx.fillRect(this.x,this.y,10,100);}
-    
-    
-
-
-
-
+      }
+      
+      //Declaraciones
 
 
 var porteriaPc = new PorteriaPc();
@@ -67,7 +123,7 @@ function generatePlayers(){
   players.push(player2);
   players.push(player3);
   players.push(player4);
-  players.push(player5);
+ // players.push(player5);
   players.push(player6);
   
     }
@@ -82,7 +138,7 @@ function Player(x, y){
   this.x = x;
   this.y = y;
   this.width = 30;
-  this.height = 60;
+  this.height = 50;
   this.img= new Image();
   this.players = [];
   this.img.src= "img/madrid.png";
@@ -118,7 +174,7 @@ function Pc(x,y){
   this.x = x;
   this.y = y;
   this.width = 30;
-  this.height = 60;
+  this.height = 50;
   this.img= new Image();
   this.pcs = [];
   this.img.src= "img/barca.png";
@@ -165,7 +221,7 @@ function generatePcs(){
   pcs.push(pc2);
   pcs.push(pc3);
   pcs.push(pc4);
-  pcs.push(pc5);
+ // pcs.push(pc5);
   pcs.push(pc6);
 }
 function drawPcs(){
@@ -176,7 +232,7 @@ function drawPcs(){
 
 
 function Ball(){
-  this.x = 500;
+  this.x = 550;
   this.y = 300;
   this.width = 30;
   this.height= 30;
@@ -186,8 +242,6 @@ function Ball(){
   this.toLeft = false;
   this.img = new Image();
   this.img.src= "img/ball.png";
-  this.img.onload = function(){
-    this.draw();}.bind(this);
     this.draw =function(){
       
           if(this.toUp){
@@ -209,20 +263,23 @@ function Ball(){
             }else if(this.y<130){
               this.toUp = false;
             }
-          ctx.drawImage(this.img,this.x,this.y,15,15);
+          ctx.drawImage(this.img,this.x,this.y,17,17);
+          }
 
               this.isTouching = function(user){
-              return (this.x <=user.x + (user.width/2))&&
-              (this.x + (this.width/2) >= user.x) &&
-              (this.y <= user.y+ (user.height/2))&&
-              (this.y + (this.height/2)>=user.y) 
-}
+              return (this.x <=user.x + (user.width*.60)) &&
+              (this.x + (this.width*.60) >= user.x) &&
+              ((this.y-5) <= user.y + user.height*.90) &&
+              ((this.y-5) + this.height>=user.y)} 
+
 
             this.isTouchingGoal = function(porteria){
             return  (this.x <=porteria.x + (porteria.width))&&
-                    (this.x + (this.width/2) >= porteria.x) &&
+                    (this.x + (this.width) >= porteria.x) &&
                     (this.y <= porteria.y+ (porteria.height))&&
-                    (this.y + (this.height/2)>=porteria.y) }}}
+                    (this.y + (this.height)>=porteria.y)}
+            } 
+
 
         
 function Board(){
@@ -231,18 +288,20 @@ this.y=0;
 this.width= 1100
 this.height=700;
 this.music1 = new Audio();
-this.music1.src = "img/music.mp3";
+this.music1.src = "assets/music.mp3";
+this.music1.volume = 0.04;
+this.music1.loop = true;
 this.music = new Audio();
-this.music.src = "img/silbato.mp3";
+this.music.src = "assets/silbato.mp3";
+this.music.volume = 1.0;
 this.img = new Image();
 this.img.src = "img/soccer.jpg";
 ctx.drawImage(this.img,this.x,this.y,this.width,this.height);
-
-
 }
 
 
 function drawScore(){ 
+  ctx.beginPath();
     ctx.font = '24px Arial';
     ctx.fillStyle = "white";
     ctx.fillText("Real Madrid: " + scorePc +"  -  " + "Barcelona: " + scorePlayer,350, 80);
@@ -259,9 +318,10 @@ if(ball.isTouchingGoal(porteriaPc)){
   ctx.font = "80px courier";
   ctx.strokeStyle="white";
   ctx.lineWidth = 8;
-  ctx.strokeText("G00OOOAAALL" , 180,230);
-  board.music.play();
-  stop();
+  ctx.strokeText("GOAL!" , 390,530);
+  board.music.play()
+  board.music.currentTime =1;
+  ;
 
 }
 }
@@ -273,29 +333,48 @@ function checkGoalsPlayer(){
   ctx.font = "80px courier";
   ctx.strokeStyle="white";
   ctx.lineWidth = 8;
-  ctx.strokeText("G00OOOAAALL" , 180,230);
+  ctx.strokeText("GOAL!" , 390,530);
   board.music.play();
-  stop();
+  board.music.currentTime = 1;
+
  }
 }
 
 
 
+// checar reset 
+
+
 
 
 function startGame(){
-	Board()
+  
+  Board()
+  var preguntaLimit = prompt('Goals to win? :');
   players = []
+  pcs = []
   generatePlayers();
   generatePcs()
   drawScore()
+  scorePc = 0;
+  scorePlayer = 0;
   board.music1.play();
+  board.music1.currentTime =1;
 
+  interval = setInterval(function(){
+    update()
+  }, 1000/60)
 } 
 
 function stop(){
-  clearInterval(intervalo);
+  console.log("stop")
+  start = true;
+  clearInterval(interval);
   interval = 0;
+  board.music1.pause();
+  board.music1.currentTime = 1;
+
+
 }       
 
 function update(){	
@@ -310,13 +389,22 @@ function update(){
   checkGoalsPlayer(porteriaPlayer)
   PorteriaPc();
   drawScore();
+  valida()
+
+  if (ball.isTouchingGoal(porteriaPc)){
+    stop()
+  }
+
+  if (ball.isTouchingGoal(porteriaPlayer)){
+    stop()
+  }
 
 players.forEach(function(user){
   if(ball.isTouching(user))
 {  ball.toUp = !ball.toUp;
   ball.toLeft = !ball.toLeft;
-  movY=Math.floor(Math.random()*3)+2
-  movX=Math.floor(Math.random()*3)+2
+  movY=Math.floor(Math.random()*3)+3
+  movX=Math.floor(Math.random()*2)+4
 }
 }
 )
@@ -326,21 +414,16 @@ pcs.forEach(function(user){
 {
   ball.toUp = !ball.toUp;
   ball.toLeft = !ball.toLeft;
-  movY=Math.floor(Math.random()*3)+2
-  movX=Math.floor(Math.random()*3)+2
+  movY=Math.floor(Math.random()*3)+3
+  movX=Math.floor(Math.random()*2)+4
 }})
 
 }
 
-startGame()
 
 //-----------------------------------------------------------------------
 
 var interval;
-  interval = setInterval(function(){
- update()
-
-}, 1000/60);
 
 //---------------------------------------------------------------
 
@@ -353,7 +436,7 @@ addEventListener('keydown', function(e){
       pcs[1].move();
       pcs[2].move();
       pcs[3].move();
-      pcs[4].move();
+    pcs[4].move();
       pcs[5].move();
     }
   else if(e.keyCode===38){
@@ -383,8 +466,20 @@ addEventListener('keydown', function(e){
     players[2].moveUp();
     players[3].moveUp();
     players[4].moveUp();
-    players[5].moveUp();
   }})
+
+
+
+  document.addEventListener('keydown', function(e){
+    if(e.keyCode === 13 && start){
+      startGame()
+      start = false;
+;
+    }
+  })
+  
+
+  
 
 
 
