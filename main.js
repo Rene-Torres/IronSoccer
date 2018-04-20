@@ -28,7 +28,7 @@ function intro(){
 }
 
 
-var gameLimit = 2;
+var gameLimit = 1;
 var start = true;
 
 
